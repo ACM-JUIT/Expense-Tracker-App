@@ -61,11 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
-            label: 'Compare',
+            label: 'Statistics',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.wallet),
-            label: 'Analyze',
+            label: 'Wallet',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.supervised_user_circle_outlined),

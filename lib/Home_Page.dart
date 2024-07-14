@@ -63,13 +63,13 @@ class _HomeState extends State<Home> {
           top: 70,
           left: 360,
           child: FloatingActionButton(
-            child: Icon(Icons.notification_add),
             foregroundColor: Colors.white,
             backgroundColor: const Color.fromRGBO(42, 124, 118, 1),
             onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) => Notify(),)
               );
-            }
+            },
+            child: Icon(Icons.notification_add)
           ),
         ),
       ],
