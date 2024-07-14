@@ -13,12 +13,15 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       
-      body: Center(
-        child: SizedBox(
-          height: 500, width: 500,
-          child: Container(
-            height: 500, width:  500,
-            color: Colors.red,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: SizedBox(
+            height: 500, width: 500,
+            child: Container(
+              height: 500, width:  500,
+              color: Colors.red,
+            ),
           ),
         ),
       ),

@@ -60,89 +60,21 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.pie_chart),
+            icon: Icon(Icons.bar_chart),
             label: 'Compare',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.ssid_chart),
+            icon: Icon(Icons.wallet),
             label: 'Analyze',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.circle),
+            icon: Icon(Icons.supervised_user_circle_outlined),
             label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: const Color.fromRGBO(66, 150, 144, 1),
         onTap: _onItemTapped,
-      ),
-    );
-  }
-}
-
-class Home_Page extends StatelessWidget {
-  const Home_Page({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red,
-      child: const Center(
-        child: Text(
-          'Page 1: Home',
-          style: TextStyle(fontSize: 24, color: Colors.white),
-        ),
-      ),
-    );
-  }
-}
-
-class Compare extends StatelessWidget {
-  const Compare({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.green,
-      child: const Center(
-        child: Text(
-          'Page 2: Business',
-          style: TextStyle(fontSize: 24, color: Colors.white),
-        ),
-      ),
-    );
-  }
-}
-
-class Analyze extends StatelessWidget {
-  const Analyze({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-      child: const Center(
-        child: Text(
-          'Page 3: School',
-          style: TextStyle(fontSize: 24, color: Colors.white),
-        ),
-      ),
-    );
-  }
-}
-
-class Profile extends StatelessWidget {
-  const Profile({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.yellow,
-      child: const Center(
-        child: Text(
-          'Page 4: Settings',
-          style: TextStyle(fontSize: 24, color: Colors.black),
-        ),
       ),
     );
   }
