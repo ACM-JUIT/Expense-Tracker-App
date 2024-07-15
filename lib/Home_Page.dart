@@ -1,5 +1,7 @@
 import 'package:basecode/Expense.dart';
+import 'package:basecode/Log_In_Page.dart';
 import 'package:basecode/Notification.dart';
+import 'package:basecode/Sign_Up_Page.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
