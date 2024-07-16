@@ -31,9 +31,9 @@ class _HomeState extends State<Home> {
             left: 20,
             right: 20,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(40)),
-                color: const Color.fromRGBO(42, 124, 118, 1),
+                color: Color.fromRGBO(42, 124, 118, 1),
               ),
               height: 50,
               width: 100,
@@ -151,6 +151,12 @@ class _HomeState extends State<Home> {
               iconSize: 60,
             ),
           ),
+          const Positioned(
+            top: 80,
+            left: 20,
+
+          child: 
+          Text('Hi There', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24,),)),
         ],
       ),
     );

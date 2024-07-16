@@ -9,7 +9,7 @@ class AllExpenses extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('All Expenses'),
+        title: const Text('All Expenses', style: TextStyle(fontWeight: FontWeight.w700),),
         backgroundColor: const Color.fromRGBO(42, 124, 118, 1),
       ),
       body: StreamBuilder<QuerySnapshot>(

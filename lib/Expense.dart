@@ -1,4 +1,3 @@
-import 'package:basecode/Income.dart';
 import 'package:basecode/firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -76,31 +75,18 @@ class _ExpenseState extends State<Expense> {
                         const SizedBox(
                           height: 40,
                         ),
-                        Row(
+                        const Row(
                           children: <Widget>[
-                            const SizedBox(
+                            SizedBox(
                               width: 40,
                             ),
-                            const Text(
+                            Text(
                               'Expense',
                               style: TextStyle(
                                   fontSize: 26, fontWeight: FontWeight.w900),
                             ),
-                            const SizedBox(
+                            SizedBox(
                               width: 100,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Income(),
-                                    ));
-                              },
-                              child: const Text('Income',
-                                  style: TextStyle(
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w900)),
                             ),
                           ],
                         ),
