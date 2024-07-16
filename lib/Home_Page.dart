@@ -1,3 +1,4 @@
+import 'package:basecode/Splash.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -19,12 +20,10 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background painter
           CustomPaint(
             size: MediaQuery.of(context).size,
             painter: CurvedRectanglePainter(),
           ),
-          // Positioned container
           Positioned(
             top: 200,
             bottom: 480,

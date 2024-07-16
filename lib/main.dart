@@ -1,6 +1,7 @@
 import 'package:basecode/Analyze.dart';
 import 'package:basecode/Home_Page.dart';
 import 'package:basecode/Profile.dart';
+import 'package:basecode/Splash.dart';
 import 'package:basecode/compare.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: const Splash(),
     );
   }
 }
