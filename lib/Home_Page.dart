@@ -2,10 +2,10 @@ import 'package:basecode/Splash.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'AllExpenses.dart'; // Import the AllExpenses widget
-import 'Expense.dart'; // Import the Expense widget
-import 'Notification.dart'; // Import the Notify widget
-import 'firestore.dart' as fs; // Import FirestoreService with alias
+import 'AllExpenses.dart'; 
+import 'Expense.dart'; 
+import 'Notification.dart'; 
+import 'firestore.dart' as fs; 
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -38,7 +38,6 @@ class _HomeState extends State<Home> {
               width: 100,
             ),
           ),
-          // Column with transaction history
           Column(
             children: <Widget>[
               const SizedBox(height: 460),
@@ -63,7 +62,6 @@ class _HomeState extends State<Home> {
               ),
             ],
           ),
-          // Floating action button for notifications
           Positioned(
             top: 70,
             left: 360,
@@ -81,14 +79,13 @@ class _HomeState extends State<Home> {
               child: const Icon(Icons.notification_add),
             ),
           ),
-          // StreamBuilder for displaying latest expenses
           Positioned(
             top: 480,
             left: 20,
             right: 20,
             bottom: 100,
             child: StreamBuilder<QuerySnapshot>(
-              stream: fs.FirestoreService.getLatestExpensesStream(), // Use alias with prefix 'fs'
+              stream: fs.FirestoreService.getLatestExpensesStream(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   List<DocumentSnapshot> expenseList = snapshot.data!.docs;
@@ -134,7 +131,6 @@ class _HomeState extends State<Home> {
               },
             ),
           ),
-          // Positioned IconButton for adding new expense
           Positioned(
             bottom: 5,
             right: 185,
@@ -162,7 +158,7 @@ class _HomeState extends State<Home> {
   }
 }
 
-// Custom painter for the curved background
+
 class CurvedRectanglePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

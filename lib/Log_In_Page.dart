@@ -1,5 +1,5 @@
 // import 'dart:ui';
-import 'package:basecode/Home_Page.dart';
+// import 'package:basecode/Home_Page.dart';
 import 'package:basecode/Sign_Up_Page.dart';
 import 'package:basecode/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -94,6 +94,7 @@ class _LogState extends State<Log> {
                   const SizedBox(
                     height: 10,
                   ),
+                  
                   Container(
                     height: 35,
                     width: 295,
@@ -128,7 +129,7 @@ class _LogState extends State<Log> {
                             controller: _controller,
                             decoration: const InputDecoration(
                                 hintText: 'curecoders@gmail.com',
-                                hoverColor: Colors.amber),
+                                ),
                           ),
                         ),
                       ],
@@ -166,6 +167,7 @@ class _LogState extends State<Log> {
                         ),
                         Expanded(
                           child: TextField(
+                            obscureText: true,
                             controller: _controller1,
                             decoration: const InputDecoration(
                               hintText: '****************',

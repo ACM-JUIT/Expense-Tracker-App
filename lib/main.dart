@@ -42,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
     Compare(),
-    Analyze(),
     Profile(),
   ];
 
@@ -67,10 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
             label: 'Statistics',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.wallet),
-            label: 'Wallet',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.supervised_user_circle_outlined),

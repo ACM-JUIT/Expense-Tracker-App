@@ -1,8 +1,8 @@
-import 'package:basecode/Account.dart';
-import 'package:basecode/Data.dart';
-import 'package:basecode/Friends.dart';
-import 'package:basecode/Message.dart';
-import 'package:basecode/security.dart';
+import 'package:basecode/Profile_Pages/Account.dart';
+import 'package:basecode/Profile_Pages/Data.dart';
+import 'package:basecode/Profile_Pages/Friends.dart';
+import 'package:basecode/Profile_Pages/Message.dart';
+import 'package:basecode/Profile_Pages/security.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
