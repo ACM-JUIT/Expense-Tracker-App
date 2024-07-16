@@ -1,3 +1,5 @@
+import 'package:basecode/Income.dart';
+import 'package:basecode/firestore.dart';
 import 'package:flutter/material.dart';
 
 class Expense extends StatefulWidget {
@@ -8,59 +10,154 @@ class Expense extends StatefulWidget {
 }
 
 class _ExpenseState extends State<Expense> {
+  final TextEditingController _expenseNameController = TextEditingController();
+  final TextEditingController _expenseAmountController =
+      TextEditingController();
+  final FirestoreService firestoreService = FirestoreService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          CustomPaint(
-          size: Size(MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height),
-          painter: CurvedRectanglePainter(),
-        ),
-        Column(
-          children: <Widget>[
-            const SizedBox(height: 100,),
-            Row(
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            CustomPaint(
+              size: Size(MediaQuery.of(context).size.width,
+                  MediaQuery.of(context).size.height),
+              painter: CurvedRectanglePainter(),
+            ),
+            Column(
               children: <Widget>[
-                const SizedBox(width: 10,),
-                FloatingActionButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    elevation: 1000,
-                    backgroundColor:const Color.fromRGBO(66, 150, 144, 1), 
-                    foregroundColor: Colors.white,
-                    child: const Icon(Icons.arrow_back_ios),
-                  ),
-                  const SizedBox(width: 85),
-                  const Text('Add Expense', style: TextStyle(color: Colors.white, fontSize: 22),)
+                const SizedBox(
+                  height: 100,
+                ),
+                Row(
+                  children: <Widget>[
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    FloatingActionButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      elevation: 1000,
+                      backgroundColor: const Color.fromRGBO(66, 150, 144, 1),
+                      foregroundColor: Colors.white,
+                      child: const Icon(Icons.arrow_back_ios),
+                    ),
+                    const SizedBox(width: 85),
+                    const Text(
+                      'Add Expense',
+                      style: TextStyle(color: Colors.white, fontSize: 22),
+                    )
+                  ],
+                )
               ],
-            )
+            ),
+            Positioned(
+                top: 200,
+                bottom: 200,
+                left: 30,
+                right: 30,
+                child: Container(
+                    height: 300,
+                    width: 500,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(40)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.white.withOpacity(1),
+                          spreadRadius: 2,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            const SizedBox(
+                              width: 40,
+                            ),
+                            const Text(
+                              'Expense',
+                              style: TextStyle(
+                                  fontSize: 26, fontWeight: FontWeight.w900),
+                            ),
+                            const SizedBox(
+                              width: 100,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const Income(),
+                                    ));
+                              },
+                              child: const Text('Income',
+                                  style: TextStyle(
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.w900)),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(30),
+                          child: Column(
+                            children: <Widget>[
+                              TextField(
+                                controller: _expenseNameController,
+                                decoration:
+                                    const InputDecoration(labelText: 'Expense Name'),
+                              ),
+                              const SizedBox(
+                                height: 50,
+                              ),
+                              TextField(
+                                controller: _expenseAmountController,
+                                decoration:
+                                    const InputDecoration(labelText: 'Amount'),
+                              ),
+                              const SizedBox(
+                                height: 100,
+                              ),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    String expenseName =
+                                        _expenseNameController.text;
+                                    double? amount = double.tryParse(
+                                        _expenseAmountController.text);
+                                    if (expenseName.isNotEmpty &&
+                                        amount != null) {
+                                      firestoreService.addExpense(
+                                          expenseName, amount);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  'Expense added successfully')));
+                                      _expenseNameController.clear();
+                                      _expenseAmountController.clear();
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content:
+                                                  Text('Enter valid data')));
+                                    }
+                                  },
+                                  child: const Text('Add Invoice'))
+                            ],
+                          ),
+                        ),
+                      ],
+                    )))
           ],
         ),
-        Positioned(
-          top: 190,
-          bottom: 50,
-          left: 30,
-          right: 30,
-          child: Container(
-            height: 500,
-            width: 500,
-            decoration: 
-            BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(40)),  
-              boxShadow: [
-                  BoxShadow(
-                    color: Colors.white.withOpacity(1), 
-                    spreadRadius: 2, 
-                    offset: const Offset(0, 3),
-                    ),
-                  ], 
-                ),
-          )
-          )
-        ],
       ),
     );
   }
@@ -70,7 +167,7 @@ class CurvedRectanglePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = const Color.fromRGBO(66, 150, 144, 1)!
+      ..color = const Color.fromRGBO(66, 150, 144, 1)
       ..style = PaintingStyle.fill;
 
     Path path = Path();
