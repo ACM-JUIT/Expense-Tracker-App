@@ -1,10 +1,15 @@
 import 'package:basecode/Analyze.dart';
 import 'package:basecode/Home_Page.dart';
 import 'package:basecode/Profile.dart';
+import 'package:basecode/Splash.dart';
 import 'package:basecode/compare.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -19,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: const Splash(),
     );
   }
 }
@@ -37,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
     Compare(),
-    Analyze(),
     Profile(),
   ];
 
@@ -62,10 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
             label: 'Statistics',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.wallet),
-            label: 'Wallet',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.supervised_user_circle_outlined),
