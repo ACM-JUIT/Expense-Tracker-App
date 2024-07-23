@@ -99,8 +99,8 @@ class _ExpenseState extends State<Expense> {
                             children: <Widget>[
                               TextField(
                                 controller: _expenseNameController,
-                                decoration:
-                                    const InputDecoration(labelText: 'Expense Name'),
+                                decoration: const InputDecoration(
+                                    labelText: 'Expense Name'),
                               ),
                               const SizedBox(
                                 height: 50,
