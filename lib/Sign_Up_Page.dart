@@ -111,7 +111,7 @@ class _LogState extends State<SignUp> {
                           child: TextField(
                             controller: _controller,
                             decoration: const InputDecoration(
-                                hintText: 'curecoders@gmail.com',
+                                hintText: 'digitaldemons@gmail.com',
                                 hoverColor: Colors.amber),
                           ),
                         ),
