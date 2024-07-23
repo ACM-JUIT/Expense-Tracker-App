@@ -128,7 +128,7 @@ class _LogState extends State<Log> {
                           child: TextField(
                             controller: _controller,
                             decoration: const InputDecoration(
-                                hintText: 'curecoders@gmail.com',
+                                hintText: 'digitaldemons@gmail.com',
                                 ),
                           ),
                         ),
