@@ -1,4 +1,5 @@
 import 'package:basecode/Analyze.dart';
+import 'package:basecode/Auth/Splash.dart';
 import 'package:basecode/Home_Page.dart';
 import 'package:basecode/Profile.dart';
 import 'package:basecode/Splash.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({super.key, required String username});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();

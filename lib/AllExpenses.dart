@@ -23,7 +23,7 @@ class AllExpenses extends StatelessWidget {
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No expenses added'));
+            return const Center(child: Text('No expenses added',));
           } else {
             List<DocumentSnapshot> expenseList = snapshot.data!.docs;
 

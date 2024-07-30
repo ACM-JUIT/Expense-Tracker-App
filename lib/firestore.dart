@@ -26,7 +26,7 @@ class FirestoreService {
   static Stream<QuerySnapshot> getLatestExpensesStream() {
     return FirebaseFirestore.instance.collection('expenses')
       .orderBy('timestamp', descending: true)
-      .limit(4)  // Limit the number of expenses to 4
+      .limit(5)  
       .snapshots();
   }
 

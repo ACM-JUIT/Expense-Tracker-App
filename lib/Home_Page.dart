@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
                     'Transaction History',
                     style: TextStyle(fontWeight: FontWeight.w900, fontSize: 28),
                   ),
-                  const SizedBox(width: 100),
+                  const Spacer(),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -56,6 +56,7 @@ class _HomeState extends State<Home> {
                     },
                     child: const Text('See all'),
                   ),
+                  const SizedBox(width: 30),
                 ],
               ),
             ],
@@ -94,32 +95,36 @@ class _HomeState extends State<Home> {
                     );
                   }
 
-                  return ListView.builder(
-                    itemCount: expenseList.length,
-                    itemBuilder: (context, index) {
-                      DocumentSnapshot document = expenseList[index];
-                      Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
+                  return Container(
+                    height: 400, 
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: expenseList.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot document = expenseList[index];
+                        Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
 
-                      if (data == null) {
-                        return const ListTile(
-                          title: Text('No data'),
+                        if (data == null) {
+                          return const ListTile(
+                            title: Text('No data'),
+                          );
+                        }
+
+                        String? expenseName = data['name'] as String?;
+                        double? expenseAmount = data['amount']?.toDouble();
+
+                        if (expenseName == null || expenseAmount == null) {
+                          return const ListTile(
+                            title: Text('Invalid data'),
+                          );
+                        }
+
+                        return ListTile(
+                          title: Text(expenseName),
+                          subtitle: Text('Amount: \$${expenseAmount.toStringAsFixed(2)}'),
                         );
-                      }
-
-                      String? expenseName = data['name'] as String?;
-                      double? expenseAmount = data['amount']?.toDouble();
-
-                      if (expenseName == null || expenseAmount == null) {
-                        return const ListTile(
-                          title: Text('Invalid data'),
-                        );
-                      }
-
-                      return ListTile(
-                        title: Text(expenseName),
-                        subtitle: Text('Amount: \$${expenseAmount.toStringAsFixed(2)}'),
-                      );
-                    },
+                      },
+                    ),
                   );
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
