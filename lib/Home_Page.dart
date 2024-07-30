@@ -1,11 +1,9 @@
-import 'package:basecode/Splash.dart';
+import 'package:basecode/AllExpenses.dart';
+import 'package:basecode/Expense.dart';
+import 'package:basecode/Notification.dart';
+import 'package:basecode/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'AllExpenses.dart'; 
-import 'Expense.dart'; 
-import 'Notification.dart'; 
-import 'firestore.dart' as fs; 
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -48,7 +46,7 @@ class _HomeState extends State<Home> {
                     'Transaction History',
                     style: TextStyle(fontWeight: FontWeight.w900, fontSize: 28),
                   ),
-                  const SizedBox(width: 100),
+                  const Spacer(),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -58,6 +56,7 @@ class _HomeState extends State<Home> {
                     },
                     child: const Text('See all'),
                   ),
+                  const SizedBox(width: 30),
                 ],
               ),
             ],
@@ -85,7 +84,7 @@ class _HomeState extends State<Home> {
             right: 20,
             bottom: 100,
             child: StreamBuilder<QuerySnapshot>(
-              stream: fs.FirestoreService.getLatestExpensesStream(),
+              stream: FirestoreService.getLatestExpensesStream(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   List<DocumentSnapshot> expenseList = snapshot.data!.docs;
@@ -96,32 +95,36 @@ class _HomeState extends State<Home> {
                     );
                   }
 
-                  return ListView.builder(
-                    itemCount: expenseList.length,
-                    itemBuilder: (context, index) {
-                      DocumentSnapshot document = expenseList[index];
-                      Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
+                  return Container(
+                    height: 400, 
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: expenseList.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot document = expenseList[index];
+                        Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
 
-                      if (data == null) {
-                        return const ListTile(
-                          title: Text('No data'),
+                        if (data == null) {
+                          return const ListTile(
+                            title: Text('No data'),
+                          );
+                        }
+
+                        String? expenseName = data['name'] as String?;
+                        double? expenseAmount = data['amount']?.toDouble();
+
+                        if (expenseName == null || expenseAmount == null) {
+                          return const ListTile(
+                            title: Text('Invalid data'),
+                          );
+                        }
+
+                        return ListTile(
+                          title: Text(expenseName),
+                          subtitle: Text('Amount: \$${expenseAmount.toStringAsFixed(2)}'),
                         );
-                      }
-
-                      String? expenseName = data['name'] as String?;
-                      double? expenseAmount = data['amount'] as double?;
-
-                      if (expenseName == null || expenseAmount == null) {
-                        return const ListTile(
-                          title: Text('Invalid data'),
-                        );
-                      }
-
-                      return ListTile(
-                        title: Text(expenseName),
-                        subtitle: Text('Amount: \$${expenseAmount.toStringAsFixed(2)}'),
-                      );
-                    },
+                      },
+                    ),
                   );
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
@@ -149,15 +152,16 @@ class _HomeState extends State<Home> {
           const Positioned(
             top: 80,
             left: 20,
-
-          child: 
-          Text('Hi There', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24,),)),
+            child: Text(
+              'Hi There',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
 
 class CurvedRectanglePainter extends CustomPainter {
   @override

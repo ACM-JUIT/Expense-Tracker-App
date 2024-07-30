@@ -9,17 +9,8 @@ class FirestoreService {
       'amount': amount,
       'timestamp': Timestamp.now(),
     });
-
-    // Check and delete older expenses if there are more than 5
-    QuerySnapshot snapshot = await expenses.orderBy('timestamp', descending: true).get();
-    if (snapshot.docs.length > 4) {
-      for (int i = 4; i < snapshot.docs.length; i++) {
-        await snapshot.docs[i].reference.delete();
-      }
-    }
   }
 
-  // UPDATE: Update an expense given a document ID
   Future<void> updateExpense(String docId, String name, double amount) {
     return expenses.doc(docId).update({
       'name': name,
@@ -28,7 +19,6 @@ class FirestoreService {
     });
   }
 
-  // DELETE: Delete an expense given a document ID
   Future<void> deleteExpense(String docId) {
     return expenses.doc(docId).delete();
   }
@@ -36,7 +26,7 @@ class FirestoreService {
   static Stream<QuerySnapshot> getLatestExpensesStream() {
     return FirebaseFirestore.instance.collection('expenses')
       .orderBy('timestamp', descending: true)
-      .limit(4)  // Limit the number of expenses to 5
+      .limit(5)  
       .snapshots();
   }
 
