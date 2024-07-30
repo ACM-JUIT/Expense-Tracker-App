@@ -1,11 +1,9 @@
-import 'package:basecode/Splash.dart';
+import 'package:basecode/AllExpenses.dart';
+import 'package:basecode/Expense.dart';
+import 'package:basecode/Notification.dart';
+import 'package:basecode/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'AllExpenses.dart'; 
-import 'Expense.dart'; 
-import 'Notification.dart'; 
-import 'firestore.dart' as fs; 
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -85,7 +83,7 @@ class _HomeState extends State<Home> {
             right: 20,
             bottom: 100,
             child: StreamBuilder<QuerySnapshot>(
-              stream: fs.FirestoreService.getLatestExpensesStream(),
+              stream: FirestoreService.getLatestExpensesStream(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   List<DocumentSnapshot> expenseList = snapshot.data!.docs;
@@ -109,7 +107,7 @@ class _HomeState extends State<Home> {
                       }
 
                       String? expenseName = data['name'] as String?;
-                      double? expenseAmount = data['amount'] as double?;
+                      double? expenseAmount = data['amount']?.toDouble();
 
                       if (expenseName == null || expenseAmount == null) {
                         return const ListTile(
@@ -149,15 +147,16 @@ class _HomeState extends State<Home> {
           const Positioned(
             top: 80,
             left: 20,
-
-          child: 
-          Text('Hi There', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24,),)),
+            child: Text(
+              'Hi There',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
 
 class CurvedRectanglePainter extends CustomPainter {
   @override

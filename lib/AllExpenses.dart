@@ -9,20 +9,23 @@ class AllExpenses extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('All Expenses', style: TextStyle(fontWeight: FontWeight.w700),),
+        title: const Text(
+          'All Expenses',
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
         backgroundColor: const Color.fromRGBO(42, 124, 118, 1),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirestoreService.getAllExpensesStream(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No expenses added'));
+          } else {
             List<DocumentSnapshot> expenseList = snapshot.data!.docs;
-
-            if (expenseList.isEmpty) {
-              return const Center(
-                child: Text('No expenses added'),
-              );
-            }
 
             return ListView.builder(
               itemCount: expenseList.length,
@@ -37,7 +40,7 @@ class AllExpenses extends StatelessWidget {
                 }
 
                 String? expenseName = data['name'] as String?;
-                double? expenseAmount = data['amount'] as double?;
+                double? expenseAmount = data['amount']?.toDouble();
 
                 if (expenseName == null || expenseAmount == null) {
                   return const ListTile(
@@ -51,10 +54,6 @@ class AllExpenses extends StatelessWidget {
                 );
               },
             );
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
