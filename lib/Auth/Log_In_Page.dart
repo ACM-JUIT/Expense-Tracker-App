@@ -48,13 +48,13 @@ class _LogState extends State<Log> {
         password: _passwordController.text,
       );
 
-      Navigator.pop(context); // Close the progress indicator
+      Navigator.pop(context); 
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MyHomePage(username: '',)),
       );
     } catch (e) {
-      Navigator.pop(context); // Close the progress indicator
+      Navigator.pop(context); 
       displayMessageToUser('Error: ${e.toString()}', context);
     }
   }

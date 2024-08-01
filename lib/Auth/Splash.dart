@@ -28,7 +28,7 @@ class _SplashState extends State<Splash> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Lottie.asset('assets/Animation - 1721130210594.json'),
-                const SizedBox(height: 20), // Space between animation and text
+                const SizedBox(height: 20), 
                 const Text(
                   'Spend Smarter \n Save More',
                   style: TextStyle(

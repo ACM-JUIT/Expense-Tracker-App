@@ -13,6 +13,43 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  double _initialBalance = 110000.0;
+  double _balance = 1000.0; 
+  double _totalExpenses = 0.0;
+
+  void _updateBalance(double newBalance) {
+    setState(() {
+      _balance = newBalance;
+    });
+  }
+
+  void _deleteExpense(DocumentSnapshot document) async {
+    Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
+    if (data != null && data['amount'] != null) {
+      double amount = data['amount'].toDouble();
+      await FirestoreService().deleteExpense(document.id);
+      setState(() {
+        _totalExpenses -= amount;
+        _balance = _initialBalance - _totalExpenses;
+      });
+    }
+  }
+
+  void _addExpense(BuildContext context) {
+    if (_balance > 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Expense(currentBalance: _balance),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Insufficient balance to add new expense')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +71,53 @@ class _HomeState extends State<Home> {
               ),
               height: 50,
               width: 100,
+              child: Center(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirestoreService.getAllExpensesStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      _totalExpenses = 0.0;
+                      List<DocumentSnapshot> expenseList = snapshot.data!.docs;
+
+                      for (var document in expenseList) {
+                        Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
+                        if (data != null && data['amount'] != null) {
+                          _totalExpenses += data['amount'].toDouble();
+                        }
+                      }
+
+                      _balance = _initialBalance - _totalExpenses;
+
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Balance: \$${_balance.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Total Expenses: \$${_totalExpenses.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
+              ),
             ),
           ),
           Column(
@@ -96,7 +180,7 @@ class _HomeState extends State<Home> {
                   }
 
                   return Container(
-                    height: 400, 
+                    height: 400,
                     child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: expenseList.length,
@@ -122,6 +206,12 @@ class _HomeState extends State<Home> {
                         return ListTile(
                           title: Text(expenseName),
                           subtitle: Text('Amount: \$${expenseAmount.toStringAsFixed(2)}'),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                              _deleteExpense(document);
+                            },
+                          ),
                         );
                       },
                     ),
@@ -137,16 +227,35 @@ class _HomeState extends State<Home> {
           Positioned(
             bottom: 5,
             right: 185,
-            child: IconButton(
+            child: Column(
+              children: [
+                IconButton(
+                  onPressed: () => _addExpense(context),
+                  icon: const Icon(Icons.add_circle_rounded),
+                  color: const Color.fromRGBO(42, 124, 118, 1),
+                  iconSize: 60,
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 370,
+            right: 30,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(42, 124, 118, 1),
+                elevation: 1000,
+              ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Expense()),
-                );
+                setState(() {
+                  _initialBalance += 1000.0;
+                  _balance = _initialBalance - _totalExpenses;
+                });
               },
-              icon: const Icon(Icons.add_circle_rounded),
-              color: const Color.fromRGBO(42, 124, 118, 1),
-              iconSize: 60,
+              child: const Text(
+                'Update Balance',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
           const Positioned(

@@ -5,6 +5,17 @@ import 'package:flutter/material.dart';
 class AllExpenses extends StatelessWidget {
   const AllExpenses({super.key});
 
+  void _deleteExpense(BuildContext context, DocumentSnapshot document) async {
+    Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
+    if (data != null && data['amount'] != null) {
+      await FirestoreService().deleteExpense(document.id);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Expense deleted successfully')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +34,7 @@ class AllExpenses extends StatelessWidget {
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No expenses added',));
+            return const Center(child: Text('No expenses added'));
           } else {
             List<DocumentSnapshot> expenseList = snapshot.data!.docs;
 
@@ -51,6 +62,12 @@ class AllExpenses extends StatelessWidget {
                 return ListTile(
                   title: Text(expenseName),
                   subtitle: Text('Amount: \$${expenseAmount.toStringAsFixed(2)}'),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      _deleteExpense(context, document);
+                    },
+                  ),
                 );
               },
             );
