@@ -2,7 +2,9 @@ import 'package:basecode/firestore.dart';
 import 'package:flutter/material.dart';
 
 class Expense extends StatefulWidget {
-  const Expense({super.key});
+  final double currentBalance;
+
+  const Expense({super.key, required this.currentBalance});
 
   @override
   State<Expense> createState() => _ExpenseState();
@@ -10,9 +12,9 @@ class Expense extends StatefulWidget {
 
 class _ExpenseState extends State<Expense> {
   final TextEditingController _expenseNameController = TextEditingController();
-  final TextEditingController _expenseAmountController =
-      TextEditingController();
+  final TextEditingController _expenseAmountController = TextEditingController();
   final FirestoreService firestoreService = FirestoreService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,16 +101,17 @@ class _ExpenseState extends State<Expense> {
                             children: <Widget>[
                               TextField(
                                 controller: _expenseNameController,
-                                decoration:
-                                    const InputDecoration(labelText: 'Expense Name'),
+                                decoration: const InputDecoration(
+                                    labelText: 'Expense Name'),
                               ),
                               const SizedBox(
                                 height: 50,
                               ),
                               TextField(
                                 controller: _expenseAmountController,
-                                decoration:
-                                    const InputDecoration(labelText: 'Amount'),
+                                decoration: const InputDecoration(
+                                    labelText: 'Amount'),
+                                keyboardType: TextInputType.number,
                               ),
                               const SizedBox(
                                 height: 100,
@@ -121,14 +124,22 @@ class _ExpenseState extends State<Expense> {
                                         _expenseAmountController.text);
                                     if (expenseName.isNotEmpty &&
                                         amount != null) {
-                                      firestoreService.addExpense(
-                                          expenseName, amount);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content: Text(
-                                                  'Expense added successfully')));
-                                      _expenseNameController.clear();
-                                      _expenseAmountController.clear();
+                                      if (amount <= widget.currentBalance) {
+                                        firestoreService.addExpense(
+                                            expenseName, amount);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    'Expense added successfully')));
+                                        _expenseNameController.clear();
+                                        _expenseAmountController.clear();
+                                        Navigator.pop(context);
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    'Insufficient balance')));
+                                      }
                                     } else {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
@@ -136,7 +147,7 @@ class _ExpenseState extends State<Expense> {
                                                   Text('Enter valid data')));
                                     }
                                   },
-                                  child: const Text('Add Invoice'))
+                                  child: const Text('Add Expense'))
                             ],
                           ),
                         ),
@@ -158,7 +169,7 @@ class CurvedRectanglePainter extends CustomPainter {
 
     Path path = Path();
     double curveHeight =
-        size.height * 0.3; // Adjust this value to reduce the height
+        size.height * 0.3; 
 
     path.moveTo(0, 0);
     path.lineTo(0, curveHeight);
