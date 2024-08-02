@@ -93,7 +93,7 @@ class _ExpenseState extends State<Expense> {
                           ],
                         ),
                         const SizedBox(
-                          height: 50,
+                          height: 10,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(30),

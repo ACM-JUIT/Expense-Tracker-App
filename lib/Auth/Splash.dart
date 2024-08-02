@@ -17,81 +17,84 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          CustomPaint(
-            size: MediaQuery.of(context).size,
-            painter: CurvedRectanglePainter(),
-          ),
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Lottie.asset('assets/Animation - 1721130210594.json'),
-                const SizedBox(height: 20), 
-                const Text(
-                  'Spend Smarter \n Save More',
-                  style: TextStyle(
-                    fontSize: 38,
-                    fontWeight: FontWeight.w900,
-                    color: const Color.fromRGBO(66, 150, 144, 1),
-                  ),
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            CustomPaint(
+              size: MediaQuery.of(context).size,
+              painter: CurvedRectanglePainter(),
             ),
-          ),
-          Positioned(
-            top: 800,
-            left: 130,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: const Color.fromRGBO(42, 124, 118, 1)
-              ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignUp(),
-                      ));
-                },
-                child: const Text(
-                  'Get Started',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500),
-                )),
-          ),
-          Positioned(
-              top: 860,
-              left: 105,
-              child: Row(
-                children: <Widget>[
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: 100,),
+                  Lottie.asset('assets/Animation - 1721130210594.json'),
+                  const SizedBox(height: 10), 
                   const Text(
-                    'Already have an account',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    'Spend Smarter \n    Save More',
+                    style: TextStyle(
+                      fontSize: 38,
+                      fontWeight: FontWeight.w900,
+                      color: const Color.fromRGBO(66, 150, 144, 1),
+                    ),
                   ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Log(),
-                            ));
-                      },
-                      child: Text(
-                        'Log In',
-                        style: TextStyle(
-                            color: Colors.blue[900],
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold),
-                      )),
                 ],
-              )),
-        ],
+              ),
+            ),
+            Positioned(
+              top: 700,
+              left: 130,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: const Color.fromRGBO(42, 124, 118, 1)
+                ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUp(),
+                        ));
+                  },
+                  child: const Text(
+                    'Get Started',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500),
+                  )),
+            ),
+            Positioned(
+                top: 760,
+                left: 105,
+                child: Row(
+                  children: <Widget>[
+                    const Text(
+                      'Already have an account',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Log(),
+                              ));
+                        },
+                        child: Text(
+                          'Log In',
+                          style: TextStyle(
+                              color: Colors.blue[900],
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        )),
+                  ],
+                )),
+          ],
+        ),
       ),
     );
   }

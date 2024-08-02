@@ -2,11 +2,11 @@ import 'package:basecode/Analyze.dart';
 import 'package:basecode/Auth/Splash.dart';
 import 'package:basecode/Home_Page.dart';
 import 'package:basecode/Profile.dart';
-import 'package:basecode/Splash.dart';
 import 'package:basecode/compare.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:icons_flutter/icons_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
