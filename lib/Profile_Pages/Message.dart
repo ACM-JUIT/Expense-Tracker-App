@@ -10,6 +10,6 @@ class Message extends StatefulWidget {
 class _MessageState extends State<Message> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Scaffold();
   }
 }
