@@ -58,7 +58,7 @@ class _SignUpState extends State<SignUp> {
       Navigator.pop(context); 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const MyHomePage(username: '',)),
+        MaterialPageRoute(builder: (context) => const MyHomePage(username: '', userId: '',)),
       );
     } catch (e) {
       Navigator.pop(context);

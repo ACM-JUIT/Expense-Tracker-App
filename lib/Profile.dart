@@ -1,21 +1,37 @@
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io'; // To use File
+import 'package:provider/provider.dart';
+import 'image_provider.dart';
 import 'package:basecode/Profile_Pages/Account.dart';
 import 'package:basecode/Profile_Pages/Data.dart';
 import 'package:basecode/Profile_Pages/Friends.dart';
 import 'package:basecode/Profile_Pages/Message.dart';
 import 'package:basecode/Profile_Pages/security.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  const Profile({super.key, required this.userId});
+
+  final String userId;
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      Provider.of<ImageProviderModel>(context, listen: false)
+          .setImageFile(File(pickedFile.path));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final imageProvider = Provider.of<ImageProviderModel>(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -25,30 +41,34 @@ class _ProfileState extends State<Profile> {
             painter: CurvedRectanglePainter(),
           ),
           Positioned(
-              top: 100,
-              left: 10,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                backgroundColor: const Color.fromRGBO(66, 150, 144, 1),
-                foregroundColor: Colors.white,
-                elevation: 1000,
-                child: const Icon(Icons.arrow_back_ios),
-              )),
+            top: 100,
+            left: 10,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              backgroundColor: const Color.fromRGBO(66, 150, 144, 1),
+              foregroundColor: Colors.white,
+              elevation: 1000,
+              child: const Icon(Icons.arrow_back_ios),
+            ),
+          ),
           const Positioned(
-              top: 112,
-              left: 185,
-              child: Text(
-                'Profile',
-                style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700),
-              )),
+            top: 112,
+            left: 185,
+            child: Text(
+              'Profile',
+              style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
           Positioned(
-              top: 250,
-              left: 170,
+            top: 250,
+            left: 170,
+            child: GestureDetector(
+              onTap: _pickImage,
               child: Container(
                 height: 100,
                 width: 100,
@@ -56,12 +76,20 @@ class _ProfileState extends State<Profile> {
                     borderRadius: BorderRadius.all(Radius.circular(90)),
                     color: Colors.red),
                 child: ClipOval(
-                  child: Image.asset(
-                    'assets/hulk.jpeg',
-                    fit: BoxFit.cover,
-                  ),
+                  child: imageProvider.imageFile != null
+                      ? Image.file(
+                          imageProvider.imageFile!,
+                          fit: BoxFit.cover,
+                        )
+                      : const Icon(
+                          Icons.camera_alt,
+                          size: 50,
+                          color: Colors.white,
+                        ),
                 ),
-              )),
+              ),
+            ),
+          ),
           Column(
             children: <Widget>[
               const SizedBox(
@@ -129,12 +157,16 @@ class _ProfileState extends State<Profile> {
                   ),
                   TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Account(),));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Account(),
+                            ));
                       },
-                      child:const Text(
+                      child: const Text(
                         'Account Info',
                         style: TextStyle(color: Colors.black, fontSize: 18),
-                      ) )
+                      )),
                 ],
               ),
               const SizedBox(height: 15,),
@@ -159,12 +191,16 @@ class _ProfileState extends State<Profile> {
                   ),
                   TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Message(),));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Message(),
+                            ));
                       },
-                      child:const Text(
+                      child: const Text(
                         'Message Centre',
                         style: TextStyle(color: Colors.black, fontSize: 18),
-                      ) ),
+                      )),
                 ],
               ),
               const SizedBox(height: 15,),
@@ -189,12 +225,16 @@ class _ProfileState extends State<Profile> {
                   ),
                   TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Security(),));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Security(),
+                            ));
                       },
-                      child:const Text(
+                      child: const Text(
                         'Login and Security',
                         style: TextStyle(color: Colors.black, fontSize: 18),
-                      ) )
+                      )),
                 ],
               ),
               SizedBox(height: 15,),
@@ -219,12 +259,16 @@ class _ProfileState extends State<Profile> {
                   ),
                   TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Data(),));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Data(),
+                            ));
                       },
-                      child:const Text(
+                      child: const Text(
                         'Data and Privacy',
                         style: TextStyle(color: Colors.black, fontSize: 18),
-                      ) )
+                      )),
                 ],
               )
             ],

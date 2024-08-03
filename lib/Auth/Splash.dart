@@ -1,7 +1,5 @@
 import 'package:basecode/Auth/Log_In_Page.dart';
 import 'package:basecode/Auth/Sign_Up_Page.dart';
-import 'package:basecode/Log_In_Page.dart';
-import 'package:basecode/Sign_Up_Page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';

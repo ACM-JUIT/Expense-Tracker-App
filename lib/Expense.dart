@@ -1,10 +1,11 @@
-import 'package:basecode/firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:basecode/firestore.dart';
 
 class Expense extends StatefulWidget {
   final double currentBalance;
+  final String userId; // Add userId
 
-  const Expense({super.key, required this.currentBalance});
+  const Expense({super.key, required this.currentBalance, required this.userId});
 
   @override
   State<Expense> createState() => _ExpenseState();
@@ -13,7 +14,13 @@ class Expense extends StatefulWidget {
 class _ExpenseState extends State<Expense> {
   final TextEditingController _expenseNameController = TextEditingController();
   final TextEditingController _expenseAmountController = TextEditingController();
-  final FirestoreService firestoreService = FirestoreService();
+  late final FirestoreService _firestoreService;
+
+  @override
+  void initState() {
+    super.initState();
+    _firestoreService = FirestoreService(widget.userId); // Initialize with userId
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +132,7 @@ class _ExpenseState extends State<Expense> {
                                     if (expenseName.isNotEmpty &&
                                         amount != null) {
                                       if (amount <= widget.currentBalance) {
-                                        firestoreService.addExpense(
+                                        _firestoreService.addExpense(
                                             expenseName, amount);
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
@@ -168,8 +175,7 @@ class CurvedRectanglePainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     Path path = Path();
-    double curveHeight =
-        size.height * 0.3; 
+    double curveHeight = size.height * 0.3;
 
     path.moveTo(0, 0);
     path.lineTo(0, curveHeight);

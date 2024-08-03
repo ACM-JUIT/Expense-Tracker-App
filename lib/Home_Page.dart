@@ -1,12 +1,14 @@
-import 'package:basecode/AllExpenses.dart';
-import 'package:basecode/Expense.dart';
-import 'package:basecode/Notification.dart';
-import 'package:basecode/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'firestore.dart'; // Make sure this imports the updated FirestoreService
+import 'Expense.dart'; // Ensure this widget accepts userId
+import 'AllExpenses.dart'; // Ensure this widget accepts userId
+import 'Notification.dart'; // Update if needed
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final String userId; // Add userId
+
+  const Home({Key? key, required this.userId}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -17,6 +19,8 @@ class _HomeState extends State<Home> {
   double _balance = 1000.0; 
   double _totalExpenses = 0.0;
 
+  FirestoreService get _firestoreService => FirestoreService(widget.userId);
+
   void _updateBalance(double newBalance) {
     setState(() {
       _balance = newBalance;
@@ -26,8 +30,8 @@ class _HomeState extends State<Home> {
   void _deleteExpense(DocumentSnapshot document) async {
     Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
     if (data != null && data['amount'] != null) {
-      double amount = data['amount'].toDouble();
-      await FirestoreService().deleteExpense(document.id);
+      double amount = data['amount']?.toDouble() ?? 0;
+      await _firestoreService.deleteExpense(document.id);
       setState(() {
         _totalExpenses -= amount;
         _balance = _initialBalance - _totalExpenses;
@@ -40,7 +44,7 @@ class _HomeState extends State<Home> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Expense(currentBalance: _balance),
+          builder: (context) => Expense(userId: widget.userId, currentBalance: _balance),
         ),
       );
     } else {
@@ -73,7 +77,7 @@ class _HomeState extends State<Home> {
               width: 100,
               child: Center(
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: FirestoreService.getAllExpensesStream(),
+                  stream: _firestoreService.getAllExpensesStream(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       _totalExpenses = 0.0;
@@ -82,7 +86,7 @@ class _HomeState extends State<Home> {
                       for (var document in expenseList) {
                         Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
                         if (data != null && data['amount'] != null) {
-                          _totalExpenses += data['amount'].toDouble();
+                          _totalExpenses += data['amount']?.toDouble() ?? 0;
                         }
                       }
 
@@ -135,7 +139,9 @@ class _HomeState extends State<Home> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const AllExpenses()),
+                        MaterialPageRoute(
+                          builder: (context) => AllExpenses(userId: widget.userId),
+                        ),
                       );
                     },
                     child: const Text('See all'),
@@ -168,7 +174,7 @@ class _HomeState extends State<Home> {
             right: 20,
             bottom: 100,
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirestoreService.getLatestExpensesStream(),
+              stream: _firestoreService.getLatestExpensesStream(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   List<DocumentSnapshot> expenseList = snapshot.data!.docs;

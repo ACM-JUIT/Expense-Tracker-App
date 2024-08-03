@@ -1,8 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
-  final CollectionReference expenses =
-      FirebaseFirestore.instance.collection('expenses');
+  final String userId; // Add userId to FirestoreService
+
+  FirestoreService(this.userId);
+
+  // Collection reference with userId
+  CollectionReference get expenses => FirebaseFirestore.instance
+      .collection('users')
+      .doc('userId')
+      .collection('expenses');
 
   Future<void> addExpense(String name, double amount) async {
     await expenses.add({
@@ -24,22 +31,19 @@ class FirestoreService {
     return expenses.doc(docId).delete();
   }
 
-  static Stream<QuerySnapshot> getLatestExpensesStream() {
-    return FirebaseFirestore.instance
-        .collection('expenses')
+  Stream<QuerySnapshot> getLatestExpensesStream() {
+    return expenses
         .orderBy('timestamp', descending: true)
         .limit(5)
         .snapshots();
   }
 
-  static Stream<QuerySnapshot> getAllExpensesStream() {
-    return FirebaseFirestore.instance
-        .collection('expenses')
+  Stream<QuerySnapshot> getAllExpensesStream() {
+    return expenses
         .orderBy('timestamp', descending: true)
         .snapshots();
   }
 
-  // New Method to get monthly expenses
   Future<Map<String, double>> getMonthlyExpenses() async {
     final now = DateTime.now();
     final startOfMonth = DateTime(now.year, now.month, 1);
