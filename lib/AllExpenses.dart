@@ -3,12 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AllExpenses extends StatelessWidget {
-  const AllExpenses({super.key});
+  final String userId; // Add userId
+
+  const AllExpenses({super.key, required this.userId}); // Initialize userId
 
   void _deleteExpense(BuildContext context, DocumentSnapshot document) async {
     Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
     if (data != null && data['amount'] != null) {
-      await FirestoreService().deleteExpense(document.id);
+      await FirestoreService(userId).deleteExpense(document.id); // Pass userId to FirestoreService
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Expense deleted successfully')),
@@ -27,7 +29,7 @@ class AllExpenses extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(42, 124, 118, 1),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirestoreService.getAllExpensesStream(),
+        stream: FirestoreService(userId).getAllExpensesStream(), // Pass userId to FirestoreService
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));

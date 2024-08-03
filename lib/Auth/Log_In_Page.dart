@@ -1,6 +1,5 @@
 import 'package:basecode/Auth/Sign_Up_Page.dart';
 import 'package:basecode/Home_Page.dart';
-import 'package:basecode/Sign_Up_Page.dart';
 import 'package:basecode/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +50,7 @@ class _LogState extends State<Log> {
       Navigator.pop(context); 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const MyHomePage(username: '',)),
+        MaterialPageRoute(builder: (context) => const MyHomePage(userId: '', username: '',)),
       );
     } catch (e) {
       Navigator.pop(context); 

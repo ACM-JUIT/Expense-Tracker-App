@@ -1,18 +1,24 @@
 import 'package:basecode/firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:your_project/services/firestore_service.dart';  // Update import path
 
 class Compare extends StatefulWidget {
-  const Compare({super.key});
+  final String userId; // Add userId
+
+  const Compare({super.key, required this.userId});
 
   @override
   State<Compare> createState() => _CompareState();
 }
 
 class _CompareState extends State<Compare> {
-  final FirestoreService firestoreService = FirestoreService();
+  late final FirestoreService firestoreService;
+
+  @override
+  void initState() {
+    super.initState();
+    firestoreService = FirestoreService(widget.userId); // Initialize with userId
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,7 @@ class _CompareState extends State<Compare> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: StreamBuilder<Map<String, double>>(
-          stream: firestoreService.getDailyExpenses(),
+          stream: firestoreService.getDailyExpenses(), // Fetch daily expenses based on userId
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
